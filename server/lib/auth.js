@@ -1,4 +1,5 @@
 const passport = require("passport");
+const UserModel = require("../models/UserModel");
 const LocalStrategy = require("passport-local").Strategy;
 
 passport.use(
@@ -21,6 +22,17 @@ passport.use(
     }
   )
 );
+
+passport.serializeUser((user, done) => done(null, user._id));
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await UserModel.findById(id).exec();
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+});
 
 module.exports = {
   initialize: passport.initialize(),

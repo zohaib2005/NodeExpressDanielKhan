@@ -4,6 +4,7 @@ const UserModel = require("../../models/UserModel");
 const router = express.Router();
 
 module.exports = () => {
+  router.get("/login", (req, res) => res.render("users/login"));
   router.get("/registration", (req, res) =>
     res.render("users/registration", { success: req.query.success })
   );
