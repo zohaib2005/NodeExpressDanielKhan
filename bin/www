@@ -44,20 +44,31 @@ app.set("port", port);
  */
 const server = http.createServer(app);
 
-// db here
-// Connecting to database
-mongoose
-  .connect("mongodb://localhost:27017/", {
-    dbName: "advanceExpressDKhan",
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then((res) => {
-    console.log("Connected to Daniel Khan database");
-  })
-  .catch((error) => {
-    console.log(error);
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+  cluster.on("exit", (worker) => {
+    console.log(`Worker ${worker.process.pid} just died`);
+    cluster.fork();
   });
+} else {
+  // db here
+  // Connecting to database
+  mongoose
+    .connect("mongodb://localhost:27017/", {
+      dbName: "advanceExpressDKhan",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then((res) => {
+      console.log("Connected to Daniel Khan database");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
 server.listen(port);
 server.on("listening", () => {
