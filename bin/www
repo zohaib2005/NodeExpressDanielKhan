@@ -4,11 +4,15 @@
  * Module dependencies.
  */
 const http = require("http");
+const cluster = require("cluster");
+const os = require("os");
 const config =
   require("../server/config")[process.env.NODE_ENV || "development"];
 const app = require("../server/app")(config);
 // To connect with your MongoDB database
 const mongoose = require("mongoose");
+
+const numCPUs = os.cpus().length;
 
 // Helper functions
 
