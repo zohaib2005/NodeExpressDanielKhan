@@ -18,6 +18,7 @@
     "email-validator": "^2.0.4",
     "express": "^4.16.4",
     "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
     "http-errors": "^1.7.1",
     "mongodb": "^3.1.10",
     "mongoose": "^8.4.4",
